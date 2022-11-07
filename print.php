@@ -4,20 +4,13 @@ use chillerlan\QRCode\QRCode;
 
 include './vendor/autoload.php';
 
-
-// $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-// $getSufix = substr($actual_link,-9);
-// $newSufix = 'receipt.php?brojPosiljke=';
-// $newPrefix = str_replace($getSufix,$newSufix,$actual_link);
-
 if (isset($_POST['content']) && !empty($_POST['content'])) {
     $result = (new QRCode())->render("kurir.transfera.com/index.php?qr=".$_SESSION['qrCode']);
 }
 
 $brojPosiljke = $_SESSION['brojPosiljke'];
-
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -44,7 +37,6 @@ $brojPosiljke = $_SESSION['brojPosiljke'];
       $("#print").click(function(){
         $("#header").show();
       });
-
     });
     </script>
   </head>
@@ -75,13 +67,12 @@ $brojPosiljke = $_SESSION['brojPosiljke'];
         </form>
       </div>
 
-
       <div class="container" id="myText" <?php if(!isset($_POST['stampa'])){echo 'style="display:none;"';} ?>>
 
         <div class="row" id="header">
           <div class="col-md-12">
-              <!-- hardcoded -->
-              <img src="http://10.5.10.239/Bane/Postal/images/BaneMemo2.png" id="header" alt="logo1" height="180px">
+              <!-- hardcoded!!! -->
+              <img src="http://10.5.10.239/Postal/images/memo-a4.png" id="header" alt="logo" height="180px">
           </div>
 
         </div>
@@ -95,36 +86,31 @@ $brojPosiljke = $_SESSION['brojPosiljke'];
           </div>
 
           <div class="row p-3 mt-5">
-            <!-- <div class="col-md-4"></div> -->
-            <!-- <div class="col-md-4"> -->
-              <table class="table table-bordered text-center" style="width:300px; margin-left: 380px;">
-                <tbody>
-                  <?php
-                  $count = 1;
-                  foreach($_SESSION['barcodes'] as $barcode){
-                    if ($barcode != '') {
-                      if ($count == 18) {
-                        echo '<tr><td>'.$barcode.'</td>';
-                        echo '<tr style="height:600px; border:#ffffff;"><td></td></tr>';
-                        $count++;
-                      }elseif($count == 43 || $count == 68 || $count == 93){
-                        echo '<tr><td>'.$barcode.'</td>';
-                        echo '<tr style="height:600px; border:#ffffff;"><td></td></tr>';
-                        $count++;
-                      }
-                      else{
-                        echo '<td>'.$barcode.'</td></tr>';
-                        $count++;
-                      }
+            <table class="table table-bordered text-center" style="width:300px; margin-left: 380px;">
+              <tbody>
+                <?php
+                $count = 1;
+                foreach($_SESSION['barcodes'] as $barcode){
+                  if ($barcode != '') {
+                    if ($count == 18) {
+                      echo '<tr><td>'.$barcode.'</td>';
+                      echo '<tr style="height:600px; border:#ffffff;"><td></td></tr>';
+                      $count++;
+                    }elseif($count == 43 || $count == 68 || $count == 93){
+                      echo '<tr><td>'.$barcode.'</td>';
+                      echo '<tr style="height:600px; border:#ffffff;"><td></td></tr>';
+                      $count++;
+                    }
+                    else{
+                      echo '<td>'.$barcode.'</td></tr>';
+                      $count++;
                     }
                   }
+                }
 
-                  ?>
-                </tbody>
-              </table>
-            <!-- </div> -->
-            <!-- <div class="col-md-4"></div> -->
-
+                ?>
+              </tbody>
+            </table>
           </div>
 
           <div class="container">
@@ -152,10 +138,6 @@ $brojPosiljke = $_SESSION['brojPosiljke'];
             </div>
           </div>
 
-
-
-
-
           <div class="text-center fixed-bottom" id="footer" style="color:red; font-family:'Calibri', sans-serif; font-size:9px;">
             <p>Administrativno sedište: Savski nasip 7, 11000 Beograd, Srbija<br>
               Tel. +381 (0) 11 414 98 00; Fax. +381 (0) 414 98 19<br>
@@ -180,9 +162,9 @@ $brojPosiljke = $_SESSION['brojPosiljke'];
             }
            ?>><img src="images/print-icon.svg" alt="print icon"></button>
         </div>
-        <div class="p-2">
 
-        </div>
+        <div class="p-2"></div>
+
         <div class="p-2">
           <a href="index.php"><button type="button" class="btn btn-warning" title="Početna stranica"><img src="images/home-icon.svg" alt="home icon"></button></a>
         </div>

@@ -13,8 +13,6 @@ include 'header.php';
       });
     });
 
-
-
     $("#submit").click(function() {
       if ($("#brojPosiljke").val() == '' && $("#klijent").val() == '') {
         alert("Klijent je obavezno polje!");
@@ -24,7 +22,6 @@ include 'header.php';
       } else if ($("#brojPosiljke").val() != '' && $("#klijent").val() == '') {
         alert("Klijent je obavezno polje!");
       }
-
     });
 
     $("#brojPosiljke").blur(function() {
@@ -32,17 +29,13 @@ include 'header.php';
       var brojTrim = broj.replace(/[^a-zA-Z0-9]/g, '');
       $("#brojPosiljke").val(brojTrim);
     });
-    //new
-    $("#home").addClass("active");
 
+    $("#home").addClass("active");
   });
 </script>
 </head>
 
 <body>
-<?php
-//$_SESSION['kurir'] = $kurir;
-?>
   <div class="container-fluid">
     <?php
     include 'navigation.php';
@@ -63,7 +56,6 @@ include 'header.php';
             </div>
         </div>
         <div class="col-lg-4 mt-4">
-          <!-- <button type="button" name="generate" class="btn btn-success" id="generate">Generiši</button> -->
         </div>
       </div>
 
@@ -86,16 +78,10 @@ include 'header.php';
         </div>
         <div class="col-lg-4 mt-5"></div>
       </div>
-
-
       </form>
 
     </div>
-    <!--inner div-->
-
-    <!-- outer div -->
   </div>
 
 </body>
-
 </html>

@@ -1,6 +1,7 @@
 <?php
 session_start();
-include 'db.php';
+//include 'db.php';
+include 'dbh.php';
 
  ?>
  <!DOCTYPE html>
@@ -80,7 +81,7 @@ include 'db.php';
     <h2>Pretraga pošiljaka</h2>
   </div>
   <div class="container mt-5">
-    <form action="advanced.php" method="POST">
+    <form action="adv.php" method="POST">
       <div class="row">
         <div class="col-md-4">
           <div class="form-group mt-3">
@@ -162,18 +163,24 @@ include 'db.php';
 
       $getInvoice = "";
       if ($invoice !== '') {
-        $getInvoice .= "AND BarkodSadrzaj =  '".$invoice."'";
+        $getInvoice .= "AND dokumentId =  '".$invoice."'";
       }
       $getQuery .= $getInvoice;
       $_SESSION['getQuery'] = $getQuery;
 
-      //Query sa COUNT(1) za brojanje rezultata / ne sme da sadrzi ORDER BY
-      $result_count = $conn->query("SELECT COUNT(1) AS total_records FROM shipments LEFT JOIN clients ON shipments.KlijentId=clients.EksternaSifra WHERE 1 = 1 ".$getQuery."")->fetch(PDO::FETCH_ASSOC);
+
+      $result_count = $sqlP->query("SELECT COUNT(1) AS total_records FROM posiljka
+      LEFT JOIN clients ON posiljka.KlijentId=clients.EksternaSifra
+      INNER JOIN dokument ON dokument.posiljkaId = posiljka.id
+      WHERE 1 = 1 ".$getQuery."")->fetch(PDO::FETCH_ASSOC);
 
       $total_records = $result_count['total_records'];
 
-      //Pravi Query - mora da sadrzi ORDER BY
-      $result = $conn->query("SELECT * FROM shipments LEFT JOIN clients ON shipments.KlijentId=clients.EksternaSifra WHERE 1 = 1 ".$getQuery." ORDER BY DatumSlanja ASC OFFSET  0 ROWS FETCH NEXT 10 ROWS ONLY");
+
+      $result = $sqlP->query("SELECT * FROM posiljka
+        LEFT JOIN clients ON posiljka.KlijentId=clients.EksternaSifra
+        INNER JOIN dokument ON dokument.posiljkaId = posiljka.id
+        WHERE 1 = 1 ".$getQuery." ORDER BY DatumSlanja ASC OFFSET  0 ROWS FETCH NEXT 10 ROWS ONLY");
 
       if ($total_records > 0) {
         echo '<table class="table table-striped">
@@ -197,12 +204,12 @@ include 'db.php';
                     }
                     echo '
                     <td class="text-center">'.$row['Naziv'].'</td>
-                    <td class="text-center">'.$row['BarkodSadrzaj'].'</td>
+                    <td class="text-center">'.$row['dokumentId'].'</td>
                     <td class="text-center">'.substr($row['DatumSlanja'],0,10).'</td>
                     <td class="text-center"><a href="advanced-print.php?bc='.$row['BarkodPosiljke'].'&client='.$row['Naziv'].'&date='.substr($row['DatumSlanja'],0,10).'"><img src="images/print-icon-2.svg" alt="print icon" title="Štampaj specifikaciju"></a></td>
                   </tr>';
         }
-        $conn = null;
+        $sqlP = null;
         echo '</tbody></table>
         <button type="button" name="button" class="btn btn-primary" id="more"';
         if ($total_records < 10) {

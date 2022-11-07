@@ -3,9 +3,9 @@ session_start();
 error_reporting(0);
 include 'dbh.php';
 $klijent = $_SESSION['klijent'];
-
 include 'header.php';
 ?>
+
 <script>
   $(document).ready(function() {
     $("#back").click(function() {
@@ -15,32 +15,14 @@ include 'header.php';
 </script>
 
 <?php
-
-// if (isset($_POST['submit']) && !empty($_SESSION['klijent']) && count($_POST["barcode"]) > 1) {
-
-
 if (isset($_POST['submit']) && !empty($_SESSION['klijent']) && count($_POST["barcode"]) > 0) {
 
   $kurir = $_SESSION['kurir'];
   unset($_SESSION['kurir']);
-
-
-  // echo $_SESSION['qrCode']." / ".$_SESSION['brojPosiljke']."<hr>";
   $codes = $_POST["barcode"];
   $barcodes = array_unique($codes);
-  // echo "<pre>"; print_r($barcodes);echo "</pre>";
   $_SESSION['barcodes'] = $barcodes;
-
-  // echo "<pre>"; print_r($barcodes); echo "</pre><hr>";
-
   $klijent = $_SESSION['klijent'];
-
-  // $select1 = $conn->query("SELECT EksternaSifra FROM clients WHERE Naziv ='" . $klijent . "'");
-
-
-  // $select1 = $sqlP->query("SELECT EksternaSifra FROM clients WHERE Naziv ='" . $klijent . "'");
-  // $klijentId = $select1->fetch(PDO::FETCH_NUM);
-
   $klijentId = $sqlP->query("SELECT EksternaSifra FROM clients WHERE Naziv ='" . $klijent . "'")->fetch(PDO::FETCH_NUM);
 
   echo '
@@ -75,11 +57,8 @@ if (isset($_POST['submit']) && !empty($_SESSION['klijent']) && count($_POST["bar
 
   </body>
   </html>';
-  // $insert1 = $conn->prepare("INSERT INTO shipments (BarkodPosiljke, BarkodSadrzaj, DatumSlanja, KlijentId, QRkodPosiljke) VALUES (:brojPosiljke, :barcode, :datumSlanja, :klijentId, :QRkodPosiljke)");
   $insert1 = $sqlP->prepare("INSERT INTO posiljka (BarkodPosiljke, QRkodPosiljke, DatumSlanja, KlijentId, Kurir) VALUES (:brojPosiljke, :QRkodPosiljke, :datumSlanja, :klijentId, :kurir)");
   $insert2 = $sqlP->prepare("INSERT INTO dokument (posiljkaId, dokumentId) VALUES (:posiljka, :dokument)");
-
-
 
   $datumSlanja = date('Y-m-d', $_SESSION['vremeUnosa']);
   $sqlP->beginTransaction();
@@ -97,34 +76,13 @@ if (isset($_POST['submit']) && !empty($_SESSION['klijent']) && count($_POST["bar
   $x = 0;
   foreach ($barcodes as $barcode) {
     $x++;
-    // echo $x."<pre>"; print_r($barcodes); echo "</pre><hr>";
 
     if ($barcode != '') {
-
-      // $insert1->execute([
-      //   'brojPosiljke' => $_SESSION['brojPosiljke'],
-      //   'barcode' => $barcode,
-      //   'datumSlanja' => $datumSlanja,
-      //   'klijentId' => $klijentId[0],
-      //   'QRkodPosiljke' => $_SESSION['qrCode']
-      // ]);
-
       $insert2->execute([
-
         'posiljka' => $id,
         'dokument' => $barcode
       ]);
     }
-
-    
-
-    // $q1 = "INSERT INTO shipments (BarkodPosiljke, BarkodSadrzaj, DatumSlanja, KlijentId, QRkodPosiljke) VALUES (:brojPosiljke, :barcode, :datumSlanja, :klijentId, :QRkodPosiljke)";
-    // $q1 = str_replace('brojPosiljke', $_SESSION['brojPosiljke'],
-    // 'barcode', $barcode,
-    // 'datumSlanja', $datumSlanja,
-    // 'klijentId', $klijentId[0],
-    // 'QRkodPosiljke', $_SESSION['qrCode']
-
   }
 } else {
   echo '

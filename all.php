@@ -15,7 +15,7 @@ include 'header.php';
 
     $("#all").addClass("active");
   });
-  
+
 </script>
 
 </head>

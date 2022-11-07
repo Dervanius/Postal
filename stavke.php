@@ -6,7 +6,6 @@ $_SESSION['brojPosiljke'] = $_POST['brojPosiljke'];
 $_SESSION['kurir'] = $_POST['kurir'];
 include 'header.php';
 
-
 $n = 25;
 function getSuffix($n)
 {
@@ -17,17 +16,11 @@ function getSuffix($n)
     $index = rand(0, strlen($characters) - 1);
     $randomString .= $characters[$index];
   }
-
   return $randomString;
 }
 
-// $sufix = getSuffix($n);
 $qr = trim(getSuffix($n));
 $_SESSION['qrCode'] = $qr;
-
-//echo "<hr>".$_SESSION['kurir']."<hr>";
-// echo "<hr>".$_POST['kurir']."<hr>";
-
 ?>
 
   <script>
@@ -128,11 +121,9 @@ $_SESSION['qrCode'] = $qr;
           <div class="col-lg-4"><button type="button" name="add_bc" class="btn btn-success add_bc mt-4" id="add_bc">Dodaj</button></div>
         </div>
 
-
         <div class="row">
           <div class="col-lg-4 mt-5"></div>
           <div class="col-lg-4 mt-5">
-            <!-- <button type="button" name="add_bc" class="btn btn-success add_bc" id="add_bc">Dodaj</button> -->
             <button type="submit" name="submit" id="submit" class="btn btn-primary">Pošalji</button>
           </div>
           <div class="col-lg-4 mt-5"></div>
