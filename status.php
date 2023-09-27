@@ -23,7 +23,14 @@ if (isset($_POST['submit']) && !empty($_SESSION['klijent']) && count($_POST["bar
   $barcodes = array_unique($codes);
   $_SESSION['barcodes'] = $barcodes;
   $klijent = $_SESSION['klijent'];
-  $klijentId = $sqlP->query("SELECT EksternaSifra FROM clients WHERE Naziv ='" . $klijent . "'")->fetch(PDO::FETCH_NUM);
+
+  $clientWithoutSpace = explode(' ', $klijent);
+  $clientName = "";
+  for ($i = 0; $i < count($clientWithoutSpace); $i++) {
+    $clientName .= $clientWithoutSpace[$i] . '%';
+  }
+
+  $klijentId = $sqlP->query("SELECT EksternaSifra FROM clients WHERE Naziv LIKE '" . $clientName . "'")->fetch(PDO::FETCH_ASSOC);
 
   echo '
     </head>
@@ -67,7 +74,7 @@ if (isset($_POST['submit']) && !empty($_SESSION['klijent']) && count($_POST["bar
     'brojPosiljke' => $_SESSION['brojPosiljke'],
     'QRkodPosiljke' => $_SESSION['qrCode'],
     'datumSlanja' => $datumSlanja,
-    'klijentId' => $klijentId[0],
+    'klijentId' => $klijentId['EksternaSifra'],
     'kurir' => $kurir
   ]);
 

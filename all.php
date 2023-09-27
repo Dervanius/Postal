@@ -1,13 +1,13 @@
 <?php
-include 'db.php';
+include 'dbh.php';
 include 'header.php';
 
  ?>
 <script>
   $(document).ready(function(){
-    var resultCount = 10;
+    var resultCount = 30;
     $("#more").click(function(){
-      resultCount = resultCount + 10;
+      resultCount = resultCount + 30;
       $("#results").load("all-add.php", {
         resultNewCount: resultCount
       });
@@ -42,8 +42,11 @@ include 'header.php';
 
       <?php
       //preradi query
-      $query = $conn->query("SELECT * FROM shipments LEFT JOIN clients ON shipments.KlijentId=clients.EksternaSifra ORDER BY DatumSlanja DESC OFFSET  0 ROWS
-                FETCH NEXT 10 ROWS ONLY")->fetchall(PDO::FETCH_ASSOC);
+      $query = $sqlP->query("SELECT * FROM posiljka
+                LEFT JOIN clients ON posiljka.KlijentId=clients.EksternaSifra
+                INNER JOIN dokument ON dokument.posiljkaId = posiljka.id
+                ORDER BY DatumSlanja DESC OFFSET  0 ROWS
+                FETCH NEXT 30 ROWS ONLY")->fetchall(PDO::FETCH_ASSOC);
 
                 foreach ($query as $row){
                   //try first
@@ -53,10 +56,10 @@ include 'header.php';
                     echo "<tr><td>".$row['BarkodPosiljke']."</td>";
                   }
                   echo "<td>".$row['Naziv']."</td>";
-                  if($row['BarkodSadrzaj'] == ''){
+                  if($row['dokumentId'] == ''){
                     echo "<td>N/A</td>";
                   }else {
-                    echo "<td>".$row['BarkodSadrzaj']."</td>";
+                    echo "<td>".$row['dokumentId']."</td>";
                   }
                   echo "<td>".substr($row['DatumSlanja'],0,10)."</td></tr>";
                 }

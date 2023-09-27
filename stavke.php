@@ -115,7 +115,7 @@ $_SESSION['qrCode'] = $qr;
           <div class="col-lg-4">
             <div class="form-group">
               <label for="barkod">Barkod:</label>
-              <input class="form-control" type="text" placeholder="Unesi Barkod" id="try" name="try" value="" autofocus>
+              <input class="form-control" type="text" placeholder="Unesi Barkod" id="try" name="try" value="" autocomplete="off" autofocus>
             </div>
           </div>
           <div class="col-lg-4"><button type="button" name="add_bc" class="btn btn-success add_bc mt-4" id="add_bc">Dodaj</button></div>

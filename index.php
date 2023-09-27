@@ -50,7 +50,7 @@ include 'header.php';
           <form action="stavke.php" method="post" id="first">
             <div class="form-group">
               <label for="klijent">Klijent:</label>
-              <input class="form-control" list="klijenti" name="klijent" id="klijent" required>
+              <input class="form-control" list="klijenti" name="klijent" id="klijent" autocomplete="off" required>
               <datalist id="klijenti">
               </datalist>
             </div>

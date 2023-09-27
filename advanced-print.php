@@ -7,8 +7,20 @@ include 'db.php';
  $BarkodPosiljke = $_GET['bc'];
  $klijent = $_GET['client'];
  $datum = $_GET['date'];
+ // echo $BarkodPosiljke;
+ // echo $klijent;
+ // echo $datum;
 
- $query = $conn->query("SELECT BarkodSadrzaj FROM shipments WHERE BarkodPosiljke = '$BarkodPosiljke' ORDER BY BarkodSadrzaj")->fetchall(PDO::FETCH_ASSOC);
+ // $query = $conn->query("SELECT BarkodSadrzaj FROM shipments WHERE BarkodPosiljke = 'RR277803636RS' ORDER BY BarkodSadrzaj")->fetchall(PDO::FETCH_ASSOC);
+ $query = $conn->query("SELECT dokumentId
+                        ,BarkodPosiljke
+                        FROM  posiljka
+                        INNER JOIN dokument
+                        ON posiljka.id = dokument.posiljkaId WHERE BarkodPosiljke = '$BarkodPosiljke' ORDER BY dokumentId")->fetchall(PDO::FETCH_ASSOC);
+
+ // foreach ($query as $row) {
+ //   echo $row['BarkodSadrzaj'];
+ // }
 
 ?>
 <!DOCTYPE html>
@@ -66,18 +78,18 @@ include 'db.php';
                   <?php
                   $count = 1;
                   foreach($query as $row){
-                    if ($row['BarkodSadrzaj'] != '') {
+                    if ($row['dokumentId'] != '') {
                       if ($count == 18) {
-                        echo '<tr><td>'.$row['BarkodSadrzaj'].'</td>';
+                        echo '<tr><td>'.$row['dokumentId'].'</td>';
                         echo '<tr style="height:600px; border:#ffffff;"><td></td></tr>';
                         $count++;
                       }elseif($count == 43 || $count == 68 || $count == 93){
-                        echo '<tr><td>'.$row['BarkodSadrzaj'].'</td>';
+                        echo '<tr><td>'.$row['dokumentId'].'</td>';
                         echo '<tr style="height:600px; border:#ffffff;"><td></td></tr>';
                         $count++;
                       }
                       else{
-                        echo '<td>'.$row['BarkodSadrzaj'].'</td></tr>';
+                        echo '<td>'.$row['dokumentId'].'</td></tr>';
                         $count++;
                       }
                     }
@@ -92,14 +104,14 @@ include 'db.php';
           </div>
 
           <div class="container">
-            <p class="mt-5"><strong>Napomena: </strong>
+            <p class="mt-5"><strong>Napomena:</strong> Jedan potpisan primerak vratiti "Transfera DOO".
               <?php
-              if (!isset($_POST['napomena'])) {
-                echo ' ';
-              }else {
-                $napomena = $_POST['napomena'];
-                echo $napomena;
-              }
+              // if (!isset($_POST['napomena'])) {
+              //   echo ' ';
+              // }else {
+              //   $napomena = $_POST['napomena'];
+              //   echo $napomena;
+              // }
                ?>
             </p>
           </div>
@@ -142,7 +154,7 @@ include 'db.php';
 
           </div>
           <div class="p-2">
-            <a href="index.php"><button type="button" class="btn btn-warning" title="Početna stranica"><img src="images/home-icon.svg" alt="home icon"></button></a>
+            <a href="advanced.php"><button type="button" class="btn btn-warning" title="Početna stranica"><img src="images/home-icon.svg" alt="home icon"></button></a>
           </div>
 
         </div>

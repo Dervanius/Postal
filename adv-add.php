@@ -11,7 +11,9 @@ $invoice = $_SESSION['invoice'];
 $getQuery = $_SESSION['getQuery'];
 
 
-$result = $conn->query("SELECT * FROM shipments LEFT JOIN clients ON shipments.KlijentId=clients.EksternaSifra WHERE 1 = 1 ".$getQuery." ORDER BY DatumSlanja ASC OFFSET  0 ROWS FETCH NEXT $resultNewCount ROWS ONLY");
+$result = $conn->query("SELECT * FROM posiljka
+                      LEFT JOIN clients ON posiljka.KlijentId=clients.EksternaSifra
+                      INNER JOIN dokument ON dokument.posiljkaId = posiljka.id WHERE 1 = 1 ".$getQuery." ORDER BY DatumSlanja ASC OFFSET  0 ROWS FETCH NEXT $resultNewCount ROWS ONLY");
 
   while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
     echo   '<tr>';
@@ -22,7 +24,7 @@ $result = $conn->query("SELECT * FROM shipments LEFT JOIN clients ON shipments.K
               }
               echo '
               <td class="text-center">'.$row['Naziv'].'</td>
-              <td class="text-center">'.$row['BarkodSadrzaj'].'</td>
+              <td class="text-center">'.$row['dokumentId'].'</td>
               <td class="text-center">'.substr($row['DatumSlanja'],0,10).'</td>
               <td class="text-center"><a href="advanced-print.php?bc='.$row['BarkodPosiljke'].'&client='.$row['Naziv'].'&date='.substr($row['DatumSlanja'],0,10).'"><img src="images/print-icon-2.svg" alt="print icon"></a></td>
             </tr>';

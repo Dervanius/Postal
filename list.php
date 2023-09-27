@@ -8,7 +8,14 @@ if (isset($_POST['suggestion'])) {
   if (!empty($klijent)) {
     foreach ($query as $row){
       if (stripos($row['Naziv'], $klijent) !== false) {
+        //Original
         echo "<option>".$row['Naziv']."</option>";
+        //First Solution
+        // $originalName = str_replace(' ', '&nbsp;', $row['Naziv']);
+        // echo "<option><pre>" . $originalName . "</pre></option>";
+        //Second solution
+        // $originalName = str_replace(' ', '&nbsp;', $row['Naziv']);
+        // echo "<option>" . $originalName . "</option>";
       }
     }
   }
