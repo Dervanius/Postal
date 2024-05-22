@@ -155,16 +155,17 @@ include 'db.php';
 
 
       if (isset($_POST['submit'])) {
-        $clientWithSpace = $_POST['client'];
-        $clientWithoutSpace = explode(' ', $clientWithSpace);
-        $client = "";
-        for ($i = 0; $i < count($clientWithoutSpace); $i++) {
-          $client .= $clientWithoutSpace[$i] . '%';
-        }
+        // $clientWithSpace = $_POST['client'];
+        // $clientWithoutSpace = explode(' ', $clientWithSpace);
+        // $client = "";
+        // for ($i = 0; $i < count($clientWithoutSpace); $i++) {
+        //   $client .= $clientWithoutSpace[$i] . '%';
+        // }
         $fromDate = trim($_POST['from-date']);
         $toDate = trim($_POST['to-date']);
         $invoice = trim($_POST['invoice']);
-        $_SESSION['client'] = $client;
+        //$_SESSION['client'] = $client;
+        $client = ($_POST['client']);
         $_SESSION['from-date'] = $fromDate;
         $_SESSION['to-date'] = $toDate;
         $_SESSION['invoice'] = $invoice;
