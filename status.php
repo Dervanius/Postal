@@ -30,11 +30,16 @@ if (isset($_POST['submit']) && !empty($_SESSION['klijent']) && count($_POST["bar
     $clientName .= $clientWithoutSpace[$i] . '%';
   }
 
-  $klijentId = $sqlP->query("SELECT EksternaSifra FROM clients WHERE Naziv LIKE '" . $clientName . "'")->fetch(PDO::FETCH_ASSOC);
+  //$klijentId = $sqlP->query("SELECT EksternaSifra FROM clients WHERE Naziv LIKE '" . $clientName . "'")->fetch(PDO::FETCH_ASSOC);
+  //Ispravljeno zbog GREINER PACKAGING DOO
+  $klijentId = $sqlP->query("SELECT EksternaSifra FROM clients WHERE Naziv LIKE '" . $klijent . "'")->fetch(PDO::FETCH_ASSOC);
 
+  //echo var_dump($klijentId);
   echo '
     </head>
   <body>
+
+  
 
   <div class="container mt-3">
     <div class="mt-4 p-5 bg-success text-white rounded">
